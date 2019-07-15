@@ -1,0 +1,52 @@
+.book-details-container {
+    display: flex;
+    justify-content: center;
+}
+
+.book-details-card {
+    width: 80%;
+    margin: 50px 0;
+}
+
+.details-review-container {
+    display: flex;
+}
+
+.book-details {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    font-size: 16px;
+    padding: 16px;
+}
+
+.book-details-text {
+    display: flex;
+    margin: 5px 0;
+}
+
+.details-name {
+    font-weight: bold;
+    width: 25%;
+}
+
+.review-field-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 40%;
+    padding: 16px;
+}
+
+.review-field {
+    width: stretch;
+}
+
+.reviews-container {
+    padding: 16px;
+}
+
+.mat-card-header {
+    justify-content: center;
+}

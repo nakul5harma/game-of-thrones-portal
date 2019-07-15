@@ -1,0 +1,40 @@
+.book-list-container {
+    display: flex;
+    justify-content: center;
+}
+
+.book-list-card {
+    width: 80%;
+    margin: 50px 0;
+    background-color: #f5f5f5;
+}
+
+.table-container {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+.card-header {
+    min-height: 64px;
+    padding: 8px 24px 0;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 100%;
+}
+
+.mat-table {
+    overflow: auto;
+    max-height: 500px;
+}
+
+.book-name-cell {
+    color: #673ab7;
+    cursor: pointer;
+}
+
+.book-name-cell:hover {
+    text-decoration: underline;
+}

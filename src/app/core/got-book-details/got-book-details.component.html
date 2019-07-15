@@ -1,0 +1,53 @@
+<div class="book-details-container">
+    <mat-card class="book-details-card">
+        <mat-card-header>
+            <mat-card-title>
+                <h3>{{bookDetails?.name}}</h3>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div class="details-review-container">
+                <div class="book-details">
+                    <div class="book-details-text">
+                        <div class="details-name">No of Pages</div>
+                        {{bookDetails?.numberOfPages}}
+                    </div>
+                    <div class="book-details-text">
+                        <div class="details-name">Publisher</div>
+                        {{bookDetails?.publisher}}
+                    </div>
+                    <div class="book-details-text">
+                        <div class="details-name">Country</div>
+                        {{bookDetails?.country}}
+                    </div>
+                    <div class="book-details-text">
+                        <div class="details-name">Media Type</div>
+                        {{bookDetails?.mediaType}}
+                    </div>
+                    <div class="book-details-text">
+                        <div class="details-name">Released</div>
+                        {{bookDetails?.released | date}}
+                    </div>
+                    <div class="book-details-text">
+                        <div class="details-name">Total
+                            Characters</div>{{bookDetails?.characters?.length}}
+                    </div>
+                </div>
+                <div class="review-field-container">
+                    <mat-form-field class="review-field">
+                        <textarea matInput placeholder="Write your review here" rows="5"
+                            formControlName="reviewFormControl"></textarea>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" type="button" (click)="addReview()">Add Review</button>
+                </div>
+            </div>
+            <div class="reviews-container">
+                <h2 class="reviews-header-text">Reviews</h2>
+                <p>example review</p>
+                <p>example review</p>
+                <p>example review</p>
+                <p>example review</p>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
