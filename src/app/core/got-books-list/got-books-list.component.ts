@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
@@ -12,7 +12,7 @@ import { GOTBookListModel } from '../got-book-list.model';
         './got-books-list.component.css'
     ]
 })
-export class GotBooksListComponent implements OnInit, AfterViewInit {
+export class GotBooksListComponent implements OnInit {
     @ViewChild(MatPaginator, { static: true })
     paginator: MatPaginator;
     @ViewChild(MatSort, { static: true })
@@ -25,22 +25,21 @@ export class GotBooksListComponent implements OnInit, AfterViewInit {
     ];
     public dataSource: MatTableDataSource<GOTBookListModel> = new MatTableDataSource();
 
-    constructor(private gotBooksService: GotBooksService, private router: Router) {}
+    constructor(private gotBooksService: GotBooksService, private router: Router) {
+        this.dataSource = new MatTableDataSource([]);
+    }
 
     ngOnInit() {
         this.gotBooksService.getBooksList().subscribe(
             (booksList: Array<GOTBookListModel>) => {
                 this.dataSource = new MatTableDataSource(booksList);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
             },
             (error) => {
                 console.log('Error Occured while fetching books list - ', error.error);
             }
         );
-    }
-
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
     }
 
     public applyFilter(filterValue: string) {
