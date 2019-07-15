@@ -36,17 +36,18 @@
                 <div class="review-field-container">
                     <mat-form-field class="review-field">
                         <textarea matInput placeholder="Write your review here" rows="5"
-                            formControlName="reviewFormControl"></textarea>
+                            [formControl]="reviewFormControl"></textarea>
                     </mat-form-field>
                     <button mat-raised-button color="primary" type="button" (click)="addReview()">Add Review</button>
                 </div>
             </div>
             <div class="reviews-container">
                 <h2 class="reviews-header-text">Reviews</h2>
-                <p>example review</p>
-                <p>example review</p>
-                <p>example review</p>
-                <p>example review</p>
+                <p *ngIf="!bookReviews || !bookReviews.length">There are no reviews for the book, like to write one?</p>
+
+                <ng-container *ngIf="bookReviews && bookReviews.length">
+                    <p *ngFor="let review of bookReviews; let index = index">{{index + 1}}. {{review}}</p>
+                </ng-container>
             </div>
         </mat-card-content>
     </mat-card>

@@ -1,30 +1,44 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { map, catchError } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, Subject } from 'rxjs';
 
 import { GOTBookModel } from './got-book.model';
 import { GOTBookListModel } from './got-book-list.model';
 
 @Injectable()
 export class GotBooksService {
-    /**
-     * booksUrl -> for getting entire book data
-     * booksUrl + <book_id> -> for getting specific book's details
-     */
     private booksUrl = 'https://anapioficeandfire.com/api/books';
+    private reviews: Map<number, Array<string>>;
+    public reviewsChanged: Subject<Array<string>> = new Subject<Array<string>>();
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(private httpClient: HttpClient) {
+        this.reviews = new Map<number, Array<string>>();
+    }
+
+    public getReviewByBookId(id: number) {
+        if (!this.reviews.get(id)) {
+            this.reviews.set(id, []);
+        }
+
+        return this.reviews.get(id).slice();
+    }
+
+    public addReviewToBookId(id: number, review: string) {
+        this.reviews.get(id).push(review);
+        this.reviewsChanged.next(this.getReviewByBookId(id));
+    }
 
     public getBooksList(): Observable<Array<GOTBookListModel>> {
         return this.httpClient.get<Array<GOTBookModel>>(this.booksUrl).pipe(
             map((bookList: Array<GOTBookModel>) => {
                 const bookListModelArray: Array<GOTBookListModel> = [];
-                bookList.forEach((bookDetails: GOTBookModel) => {
+                bookList.forEach((bookDetails: GOTBookModel, index: number) => {
                     bookListModelArray.push(
                         new GOTBookListModel(bookDetails.name, bookDetails.numberOfPages, bookDetails.characters.length)
                     );
+                    this.reviews.set(index + 1, []);
                 });
 
                 return bookListModelArray;

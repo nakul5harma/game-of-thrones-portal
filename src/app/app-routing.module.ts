@@ -9,7 +9,7 @@ const appRoutes: Routes = [
     { path: 'got-books-list', component: GotBooksListComponent },
     { path: 'got-book-details/:id', component: GotBookDetailsComponent },
     { path: '', redirectTo: 'got-books-list', pathMatch: 'full' },
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: 'got-books-list' }
 ];
 
 @NgModule({

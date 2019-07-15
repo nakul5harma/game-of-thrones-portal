@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppMaterialModule } from '../app-material.module';
 
@@ -18,9 +19,13 @@ import { GotBooksService } from './got-books.service';
     imports: [
         CommonModule,
         HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
         AppMaterialModule
     ],
     exports: [
+        FormsModule,
+        ReactiveFormsModule,
         HeaderComponent
     ],
     providers: [

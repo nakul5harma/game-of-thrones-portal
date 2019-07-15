@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import { GOTBookModel } from '../got-book.model';
 import { GotBooksService } from '../got-books.service';
 import { FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-got-book-details',
@@ -12,8 +13,11 @@ import { FormControl, Validators } from '@angular/forms';
         './got-book-details.component.css'
     ]
 })
-export class GotBookDetailsComponent implements OnInit {
+export class GotBookDetailsComponent implements OnInit, OnDestroy {
+    private subscription: Subscription;
+    public bookId: number;
     public bookDetails: GOTBookModel;
+    public bookReviews: Array<string>;
     public reviewFormControl: FormControl = new FormControl('', [
         Validators.required
     ]);
@@ -22,7 +26,9 @@ export class GotBookDetailsComponent implements OnInit {
 
     ngOnInit() {
         this.route.paramMap.subscribe((params: ParamMap) => {
-            this.gotBooksService.getBookDetails(+params.get('id')).subscribe(
+            this.bookId = +params.get('id');
+
+            this.gotBooksService.getBookDetails(this.bookId).subscribe(
                 (bookDetails: GOTBookModel) => {
                     this.bookDetails = bookDetails;
                 },
@@ -30,8 +36,20 @@ export class GotBookDetailsComponent implements OnInit {
                     console.log('Error occured while fething book details - ', error.error);
                 }
             );
+
+            this.bookReviews = this.gotBooksService.getReviewByBookId(this.bookId);
+        });
+
+        this.subscription = this.gotBooksService.reviewsChanged.subscribe((reviews: Array<string>) => {
+            this.bookReviews = reviews;
         });
     }
 
-    public addReview() {}
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+
+    public addReview() {
+        this.gotBooksService.addReviewToBookId(this.bookId, this.reviewFormControl.value);
+    }
 }
