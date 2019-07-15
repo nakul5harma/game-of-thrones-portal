@@ -25,9 +25,7 @@ export class GotBooksListComponent implements OnInit {
     ];
     public dataSource: MatTableDataSource<GOTBookListModel> = new MatTableDataSource();
 
-    constructor(private gotBooksService: GotBooksService, private router: Router) {
-        this.dataSource = new MatTableDataSource([]);
-    }
+    constructor(private gotBooksService: GotBooksService, private router: Router) {}
 
     ngOnInit() {
         this.gotBooksService.getBooksList().subscribe(
