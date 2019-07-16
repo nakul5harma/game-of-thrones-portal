@@ -1,3 +1,8 @@
 export class GOTBookListModel {
-    constructor(public bookName: string, public noOfPages: number, public noOfCharacters: number) {}
+    constructor(
+        public bookNumber: number,
+        public bookName: string,
+        public noOfPages: number,
+        public noOfCharacters: number
+    ) {}
 }

@@ -1,8 +1,12 @@
 <div class="book-details-container">
     <mat-card class="book-details-card">
+        <button mat-icon-button matTooltip="Back to the book list" matTooltipPosition="right" color="primary"
+            class="back-button" [routerLink]="['/got-books-list']">
+            <mat-icon>keyboard_backspace</mat-icon>
+        </button>
         <mat-card-header>
             <mat-card-title>
-                <h3>{{bookDetails?.name}}</h3>
+                <h3 class="book-title">{{bookDetails?.name}}</h3>
             </mat-card-title>
         </mat-card-header>
         <mat-card-content>

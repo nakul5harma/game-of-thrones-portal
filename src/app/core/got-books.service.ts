@@ -9,7 +9,7 @@ import { GOTBookListModel } from './got-book-list.model';
 
 @Injectable()
 export class GotBooksService {
-    private booksUrl = 'https://anapioficeandfire.com/api/books';
+    private readonly booksUrl = 'https://anapioficeandfire.com/api/books';
     private reviews: Map<number, Array<string>>;
     public reviewsChanged: Subject<Array<string>> = new Subject<Array<string>>();
 
@@ -18,10 +18,7 @@ export class GotBooksService {
     }
 
     public getReviewByBookId(id: number) {
-        if (!this.reviews.get(id)) {
-            this.reviews.set(id, []);
-        }
-
+        this.checkMapEntry(id);
         return this.reviews.get(id).slice();
     }
 
@@ -30,15 +27,26 @@ export class GotBooksService {
         this.reviewsChanged.next(this.getReviewByBookId(id));
     }
 
+    private checkMapEntry(id: number) {
+        if (!this.reviews.get(id)) {
+            this.reviews.set(id, []);
+        }
+    }
+
     public getBooksList(): Observable<Array<GOTBookListModel>> {
         return this.httpClient.get<Array<GOTBookModel>>(this.booksUrl).pipe(
             map((bookList: Array<GOTBookModel>) => {
                 const bookListModelArray: Array<GOTBookListModel> = [];
                 bookList.forEach((bookDetails: GOTBookModel, index: number) => {
                     bookListModelArray.push(
-                        new GOTBookListModel(bookDetails.name, bookDetails.numberOfPages, bookDetails.characters.length)
+                        new GOTBookListModel(
+                            index + 1,
+                            bookDetails.name,
+                            bookDetails.numberOfPages,
+                            bookDetails.characters.length
+                        )
                     );
-                    this.reviews.set(index + 1, []);
+                    this.checkMapEntry(index + 1);
                 });
 
                 return bookListModelArray;
@@ -53,14 +61,10 @@ export class GotBooksService {
 
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
-            // A client-side or network error occurred. Handle it accordingly.
             console.error('An error occurred:', error.error.message);
         } else {
-            // The backend returned an unsuccessful response code.
-            // The response body may contain clues as to what went wrong,
             console.error(`Backend returned code ${error.status}, ` + `body was: ${error.error}`);
         }
-        // return an observable with a user-facing error message
         return throwError('Something bad happened; please try again later.');
     }
 }

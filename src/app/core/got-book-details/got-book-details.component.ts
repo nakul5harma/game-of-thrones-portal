@@ -51,5 +51,6 @@ export class GotBookDetailsComponent implements OnInit, OnDestroy {
 
     public addReview() {
         this.gotBooksService.addReviewToBookId(this.bookId, this.reviewFormControl.value);
+        this.reviewFormControl.reset();
     }
 }
